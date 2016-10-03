@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+char screen[80];
+
 void move(double &particlePosition, double &particleSpeed, int minColumn, int maxColumn) {
 	particlePosition += particleSpeed;
 	if (particlePosition >= maxColumn) {
@@ -14,11 +16,16 @@ void move(double &particlePosition, double &particleSpeed, int minColumn, int ma
 	}
 }
 
-void draw(char &particleSymbol, double particlePosition, int maxColumn) {
-	for (int i = 0; i < particlePosition; i++) {
-		std::cout << " ";
+void clear_buffer() {
+	for (int i = 0; i < 80; i++) {
+		screen[i] = ' ';
 	}
-	std::cout << particleSymbol << std::endl;
+}
+
+void draw(char &particleSymbol, double particlePosition, int maxColumn) {
+	clear_buffer();
+	screen[static_cast<int>(particlePosition)] = particleSymbol;
+	std::cout << screen << std::endl;
 }
 
 int main() {
