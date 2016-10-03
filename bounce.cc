@@ -18,10 +18,10 @@ int main() {
     std::cout << particleSymbol << std::endl;
     particlePosition += particleSpeed;
     if (particlePosition >= maxColumn) {
-      particlePosition = maxColumn;
+      particlePosition = 2*maxColumn - particlePosition;
       particleSpeed = -particleSpeed;
-    } else if (particleSpeed < 0) {
-      particlePosition = 0;
+    } else if (particlePosition <= 0) {
+      particlePosition = -particlePosition;
       particleSpeed = -particleSpeed;
     }    
     timeStep++;
