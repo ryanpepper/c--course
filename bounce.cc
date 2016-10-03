@@ -22,24 +22,34 @@ void clear_buffer() {
 	}
 }
 
-void draw(char &particleSymbol, double particlePosition, int maxColumn) {
-	clear_buffer();
+void fill_screen(char &particleSymbol, double particlePosition, int maxColumn) {
 	screen[static_cast<int>(particlePosition)] = particleSymbol;
+}
+
+void draw() {
 	std::cout << screen << std::endl;
 }
+
+
+
 
 int main() {
 
   char particleSymbol = '*';
-  double particlePosition = 0;
+  double particlePosition1 = 0;
+  double particlePosition2 = 10;
   double particleSpeed = 6.3;
   int maxColumn = 80;
   int timeStep = 0;
   int stopTime = 60;
   double minColumn = 0;
   while (timeStep < stopTime) {
-    move(particlePosition, particleSpeed, minColumn, maxColumn);
-    draw(particleSymbol, particlePosition, maxColumn);
+    clear_buffer();
+    move(particlePosition1, particleSpeed, minColumn, maxColumn);
+    move(particlePosition2, particleSpeed, minColumn, maxColumn);
+    fill_screen(particleSymbol, particlePosition1, maxColumn);
+    fill_screen(particleSymbol, particlePosition2, maxColumn);
+    draw();
     timeStep++;
   }
 }
