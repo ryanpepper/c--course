@@ -31,7 +31,7 @@ void clear_buffer(char *screen, int length) {
 	}
 }
 
-void fill_screen(char *screen, Particle *particle, int maxColumn) {
+void fill_screen(char *screen, const Particle *particle, int maxColumn) {
 	screen[static_cast<int>(particle->position)] = particle->symbol;
 }
 
