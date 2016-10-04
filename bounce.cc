@@ -6,40 +6,40 @@
 #include <functional>
 
 class Particle {
-  public:
-    char symbol;
-    double position;
-    double speed;
+public:
+  char symbol;
+  double position;
+  double speed;
 };
 
 
 void move(Particle *particles, int minColumn, int maxColumn) {
-	particles->position += particles->speed;
-	if (particles->position >= maxColumn) {
-		particles->position = 2*maxColumn - particles->position;
-		particles->speed = -particles->speed;
-	}
-	else if (particles->position <= minColumn) {
-		particles->position = -particles->position;
-		particles->speed = -particles->speed;
-	}
+  particles->position += particles->speed;
+  if (particles->position >= maxColumn) {
+    particles->position = 2*maxColumn - particles->position;
+    particles->speed = -particles->speed;
+  }
+  else if (particles->position <= minColumn) {
+    particles->position = -particles->position;
+    particles->speed = -particles->speed;
+  }
 }
 
 void clear_buffer(char *screen, int length) {
-	for (int i = 0; i < length; i++) {
-		screen[i] = ' ';
-	}
+  for (int i = 0; i < length; i++) {
+    screen[i] = ' ';
+  }
 }
 
 void fill_screen(char *screen, const Particle *particle, int maxColumn) {
-	screen[static_cast<int>(particle->position)] = particle->symbol;
+  screen[static_cast<int>(particle->position)] = particle->symbol;
 }
 
 void draw(char *screen, int length) {
-	for (int i = 0; i < length; i++) {
-		std::cout << screen[i];
-	}
-	std::cout << std::endl;
+  for (int i = 0; i < length; i++) {
+    std::cout << screen[i];
+  }
+  std::cout << std::endl;
 }
 
 
@@ -59,20 +59,20 @@ int main() {
   double *positions = new double[n_particles];
   double *speeds = new double[n_particles];
   for (int i=0; i<n_particles; i++) {
-	Particle temp;
-	temp.symbol = symbol_choices[symgen()];
-	temp.position = pos();
-	temp.speed = speed();
-	particles[i] = temp;
+    Particle temp;
+    temp.symbol = symbol_choices[symgen()];
+    temp.position = pos();
+    temp.speed = speed();
+    particles[i] = temp;
   }
-
+  
   int timeStep = 0;
   int stopTime = 30;
   while (timeStep < stopTime) {
     clear_buffer(screen, max_columns);
     for(int i = 0; i < n_particles; i++) {
-    	move(&particles[i], min_columns, max_columns);
-   	fill_screen(screen, &particles[i], max_columns);
+      move(&particles[i], min_columns, max_columns);
+      fill_screen(screen, &particles[i], max_columns);
     }
     draw(screen, max_columns);
     timeStep++;
