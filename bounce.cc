@@ -40,7 +40,7 @@ void draw(char *screen, int length) {
 int main() {
   int min_columns = 0;
   int max_columns = 120;
-  char screen[max_columns];
+  char *screen = new char[max_columns];
   int n_particles = 4;
 
   auto speed = std::bind(std::uniform_real_distribution<double>(-10,10), std::mt19937(time(0)));
@@ -68,4 +68,5 @@ int main() {
     draw(screen, max_columns);
     timeStep++;
   }
+  delete[] screen;
 }
