@@ -10,10 +10,18 @@ public:
   char symbol;
   double position;
   double speed;
+  void initialise(char, double, double);
 };
 
+void Particle::initialise(char sym, double pos, double vel) {
+  symbol = sym;
+  position = pos;
+  speed = vel;
+}
+			
 
-void move(Particle *particles, int minColumn, int maxColumn) {
+
+void move(Particle *particles, const int minColumn, const int maxColumn) {
   particles->position += particles->speed;
   if (particles->position >= maxColumn) {
     particles->position = 2*maxColumn - particles->position;
@@ -25,17 +33,18 @@ void move(Particle *particles, int minColumn, int maxColumn) {
   }
 }
 
-void clear_buffer(char *screen, int length) {
+void clear_buffer(char *screen, const int length) {
   for (int i = 0; i < length; i++) {
     screen[i] = ' ';
   }
 }
 
-void fill_screen(char *screen, const Particle *particle, int maxColumn) {
+void fill_screen(char *screen, const Particle *particle, const int maxColumn) {
   screen[static_cast<int>(particle->position)] = particle->symbol;
 }
 
-void draw(char *screen, int length) {
+
+void draw(char *screen, const int length) {
   for (int i = 0; i < length; i++) {
     std::cout << screen[i];
   }
@@ -55,14 +64,9 @@ int main() {
   auto pos = std::bind(std::uniform_real_distribution<double>(0, 120), std::mt19937(time(0)));
   auto symgen = std::bind(std::uniform_int_distribution<int>(0, 5), std::mt19937(time(0)));
   char symbol_choices[] = { 'a', 'o', 'x', '*', 'X', 'O'};
-  char *symbols = new char[n_particles];
-  double *positions = new double[n_particles];
-  double *speeds = new double[n_particles];
   for (int i=0; i<n_particles; i++) {
     Particle temp;
-    temp.symbol = symbol_choices[symgen()];
-    temp.position = pos();
-    temp.speed = speed();
+    temp.initialise(symbol_choices[symgen()], pos(), speed());
     particles[i] = temp;
   }
   
