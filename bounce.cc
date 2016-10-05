@@ -5,48 +5,68 @@
 #include <random>
 #include <functional>
 
+class Screen;
+
 class Particle {
 public:
   char symbol;
   double position;
   double speed;
   void initialise(char, double, double);
+  void move(int, int);
+  void fill_screen(Screen *);
 };
 
-void Particle::initialise(char sym, double pos, double vel) {
-  symbol = sym;
-  position = pos;
-  speed = vel;
-}
-			
+class Screen {
+public:
+  char *buffer;
+  int length;
+  void initialise(int);
+  void draw(void);
+  void clear_buffer(void);
+  void destroy(void);
+};
 
-
-void move(Particle *particles, const int minColumn, const int maxColumn) {
-  particles->position += particles->speed;
-  if (particles->position >= maxColumn) {
-    particles->position = 2*maxColumn - particles->position;
-    particles->speed = -particles->speed;
-  }
-  else if (particles->position <= minColumn) {
-    particles->position = -particles->position;
-    particles->speed = -particles->speed;
-  }
+void Particle::initialise(char symbol, double position, double speed) {
+  this->symbol = symbol;
+  this->position = position;
+  this->speed = speed;
 }
 
-void clear_buffer(char *screen, const int length) {
+void Particle::move(const int minColumn, const int maxColumn) {
+  this->position += this->speed;
+  if (this->position >= maxColumn) {
+    this->position = 2*maxColumn - this->position;
+    this->speed = -this->speed;
+  }
+  else if (this->position <= minColumn) {
+    this->position = -this->position;
+    this->speed = -this->speed;
+  }
+}
+
+void Screen::initialise(int l){
+  this->length = l;
+  this->buffer = new char[length];
+}
+
+void Screen::destroy(void) {
+  delete[] this->buffer;
+}
+
+void Screen::clear_buffer() {
   for (int i = 0; i < length; i++) {
-    screen[i] = ' ';
+    this->buffer[i] = ' ';
   }
 }
 
-void fill_screen(char *screen, const Particle *particle, const int maxColumn) {
-  screen[static_cast<int>(particle->position)] = particle->symbol;
+void Particle::fill_screen(Screen* screen) {
+  screen->buffer[static_cast<int>(this->position)] = this->symbol;
 }
 
-
-void draw(char *screen, const int length) {
+void Screen::draw() {
   for (int i = 0; i < length; i++) {
-    std::cout << screen[i];
+    std::cout << this->buffer[i];
   }
   std::cout << std::endl;
 }
@@ -54,10 +74,11 @@ void draw(char *screen, const int length) {
 
 
 
-int main() {
-  int min_columns = 0;
-  int max_columns = 120;
-  char *screen = new char[max_columns];
+int main(){
+  int min_column = 0;
+  int max_column = 120;
+  Screen screen;
+  screen.initialise(max_column);
   int n_particles = 4;
   Particle *particles = new Particle[n_particles];
   auto speed = std::bind(std::uniform_real_distribution<double>(-10,10), std::mt19937(time(0)));
@@ -71,15 +92,15 @@ int main() {
   }
   
   int timeStep = 0;
-  int stopTime = 30;
+  int stopTime = 80;
   while (timeStep < stopTime) {
-    clear_buffer(screen, max_columns);
+    screen.clear_buffer();
     for(int i = 0; i < n_particles; i++) {
-      move(&particles[i], min_columns, max_columns);
-      fill_screen(screen, &particles[i], max_columns);
+      particles[i].move(min_column, max_column);
+      particles[i].fill_screen(&screen);
     }
-    draw(screen, max_columns);
+    screen.draw();
     timeStep++;
   }
-  delete[] screen;
+  screen.destroy();
 }
