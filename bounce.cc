@@ -21,7 +21,7 @@ class Screen {
 public:
   char *buffer;
   int length;
-  void initialise(int);
+  Screen(int l);
   void draw(void);
   void clear_buffer(void);
   void destroy(void);
@@ -45,7 +45,7 @@ void Particle::move(const int minColumn, const int maxColumn) {
   }
 }
 
-void Screen::initialise(int l){
+Screen::Screen(int l){
   this->length = l;
   this->buffer = new char[length];
 }
@@ -77,8 +77,7 @@ void Screen::draw() {
 int main(){
   int min_column = 0;
   int max_column = 120;
-  Screen screen;
-  screen.initialise(max_column);
+  Screen screen(max_column);
   int n_particles = 4;
   Particle *particles = new Particle[n_particles];
   auto speed = std::bind(std::uniform_real_distribution<double>(-10,10), std::mt19937(time(0)));
