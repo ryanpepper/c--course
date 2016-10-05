@@ -13,7 +13,7 @@ public:
   Particle(char, double, double);
   Particle(const Particle& other);
   void move(int, int);
-  void fill_screen(Screen *);
+  void fill_screen(Screen&);
   char symbol;
   double position;
   double speed;
@@ -22,15 +22,24 @@ public:
 
 class Screen {
 public:
-  char *buffer;
-  const int length;
+  int length;
   Screen(const Screen&);
   Screen(void);
   Screen(int l);
   ~Screen(void);
   void draw(void);
-  void clear_buffer(void); 
+  void clear_buffer(void);
+  char& operator[](const unsigned);
+
+  private:
+    char *buffer;
 };
+
+char& Screen::operator[](const unsigned index) {
+  return this->buffer[index];
+}
+
+
 
 Particle::Particle() {
 
@@ -74,8 +83,8 @@ Screen::~Screen(void) {
   delete[] this->buffer;
 }
 
-void Particle::fill_screen(Screen* screen) {
-  screen->buffer[static_cast<int>(this->position)] = this->symbol;
+void Particle::fill_screen(Screen& screen) {
+  screen[static_cast<int>(this->position)] = this->symbol;
 }
 
 void Screen::draw() {
@@ -114,7 +123,7 @@ int main(){
     screen.clear_buffer();
     for(int i = 0; i < n_particles; i++) {
       particles[i].move(min_column, max_column);
-      particles[i].fill_screen(&screen);
+      particles[i].fill_screen(screen);
     }
     screen.draw();
     timeStep++;
