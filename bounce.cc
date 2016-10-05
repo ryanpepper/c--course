@@ -4,35 +4,36 @@
 #include <new>
 #include <random>
 #include <functional>
-
+#include <iterator>
 class Screen;
 
 class Particle {
 public:
+  Particle();
+  Particle(char, double, double);
+  void move(int, int);
+  void fill_screen(Screen *);
   char symbol;
   double position;
   double speed;
-  void initialise(char, double, double);
-  void move(int, int);
-  void fill_screen(Screen *);
 };
+
 
 class Screen {
 public:
   char *buffer;
-  int length;
+  const int length;
   Screen(const Screen&);
+  Screen(void);
   Screen(int l);
   ~Screen(void);
   void draw(void);
-  void clear_buffer(void);
-  
+  void clear_buffer(void); 
 };
 
-void Particle::initialise(char symbol, double position, double speed) {
-  this->symbol = symbol;
-  this->position = position;
-  this->speed = speed;
+Particle::Particle() {}
+
+Particle::Particle(char symbol, double position, double speed) : symbol(symbol), position(position), speed(speed) {
 }
 
 void Particle::move(const int minColumn, const int maxColumn) {
@@ -47,13 +48,16 @@ void Particle::move(const int minColumn, const int maxColumn) {
   }
 }
 
-Screen::Screen(int l){
-  this->length = l;
+
+
+Screen::Screen(int l) : length(l) {
   this->buffer = new char[length];
 }
 
-Screen::Screen(const Screen&){
+Screen::Screen(const Screen& other) : length(other.length) {
+  this->buffer = new char[other.length];
   std::cout << "I'm a noisy copy constructor" << std::endl;
+  std::copy(other.buffer, other.buffer + other.length, this->buffer);
 }
 
 Screen::~Screen(void) {
@@ -91,9 +95,7 @@ int main(){
   auto symgen = std::bind(std::uniform_int_distribution<int>(0, 5), std::mt19937(time(0)));
   char symbol_choices[] = { 'a', 'o', 'x', '*', 'X', 'O'};
   for (int i=0; i<n_particles; i++) {
-    Particle temp;
-    temp.initialise(symbol_choices[symgen()], pos(), speed());
-    particles[i] = temp;
+    particles[i] = Particle(symbol_choices[symgen()], pos(), speed());
   }
   
   int timeStep = 0;
