@@ -21,10 +21,12 @@ class Screen {
 public:
   char *buffer;
   int length;
+  Screen(const Screen&);
   Screen(int l);
+  ~Screen(void);
   void draw(void);
   void clear_buffer(void);
-  ~Screen(void);
+  
 };
 
 void Particle::initialise(char symbol, double position, double speed) {
@@ -48,6 +50,10 @@ void Particle::move(const int minColumn, const int maxColumn) {
 Screen::Screen(int l){
   this->length = l;
   this->buffer = new char[length];
+}
+
+Screen::Screen(const Screen&){
+  std::cout << "I'm a noisy copy constructor" << std::endl;
 }
 
 Screen::~Screen(void) {
