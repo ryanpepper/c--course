@@ -101,4 +101,5 @@ int main(){
     screen.draw();
     timeStep++;
   }
+  delete[] particles;
 }
