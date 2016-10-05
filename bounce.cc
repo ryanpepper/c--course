@@ -24,7 +24,7 @@ public:
   Screen(int l);
   void draw(void);
   void clear_buffer(void);
-  void destroy(void);
+  ~Screen(void);
 };
 
 void Particle::initialise(char symbol, double position, double speed) {
@@ -50,14 +50,8 @@ Screen::Screen(int l){
   this->buffer = new char[length];
 }
 
-void Screen::destroy(void) {
+Screen::~Screen(void) {
   delete[] this->buffer;
-}
-
-void Screen::clear_buffer() {
-  for (int i = 0; i < length; i++) {
-    this->buffer[i] = ' ';
-  }
 }
 
 void Particle::fill_screen(Screen* screen) {
@@ -65,10 +59,16 @@ void Particle::fill_screen(Screen* screen) {
 }
 
 void Screen::draw() {
-  for (int i = 0; i < length; i++) {
+  for (int i = 0; i < this->length; i++) {
     std::cout << this->buffer[i];
   }
   std::cout << std::endl;
+}
+
+void Screen::clear_buffer() {
+  for (int i = 0; i < this->length; i++) {
+    this->buffer[i] = ' ';
+  }
 }
 
 
@@ -101,5 +101,4 @@ int main(){
     screen.draw();
     timeStep++;
   }
-  screen.destroy();
 }
