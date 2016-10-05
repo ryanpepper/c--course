@@ -11,6 +11,7 @@ class Particle {
 public:
   Particle();
   Particle(char, double, double);
+  Particle(const Particle& other);
   void move(int, int);
   void fill_screen(Screen *);
   char symbol;
@@ -31,9 +32,18 @@ public:
   void clear_buffer(void); 
 };
 
-Particle::Particle() {}
+Particle::Particle() {
+
+}
+
 
 Particle::Particle(char symbol, double position, double speed) : symbol(symbol), position(position), speed(speed) {
+}
+
+Particle::Particle(const Particle& other) {
+  this->speed = other.speed;
+  this->position = other.position;
+  this->symbol = other.symbol;
 }
 
 void Particle::move(const int minColumn, const int maxColumn) {
