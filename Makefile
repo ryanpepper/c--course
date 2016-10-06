@@ -1,9 +1,9 @@
-CPPFLAGS += -MD -MP
+CPPFLAGS += -MD -MP -std=c++11
 
 SOURCES := $(wildcard *.cc)
 
 executable: $(SOURCES:%.cc=%.o)
-	$(CXX) -o $@ $^ $(LDFLAGS) -std=c++11
+	$(CXX) -o $@ $^ $(LDFLAGS)
 
 clean:
 	rm *.o *.d executable
