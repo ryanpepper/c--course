@@ -1,3 +1,6 @@
+#include<iostream>
+#include "screen.h"
+
 char& Screen::operator[](const unsigned index) {
   return this->buffer[index];
 }
@@ -8,7 +11,7 @@ Screen& Screen::operator=(Screen other) {
   return *this;
 }
 
-friend void swap(Screen first, Screen second) {
+void swap(Screen first, Screen second) {
     std::swap(first.length, second.length);
     std::swap(first.buffer, second.buffer);
 };
