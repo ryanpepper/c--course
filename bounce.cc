@@ -5,6 +5,8 @@
 #include <random>
 #include <functional>
 #include <iterator>
+#include <utility>
+
 class Screen;
 
 class Particle {
@@ -27,10 +29,14 @@ public:
   Screen(void);
   Screen(int l);
   ~Screen(void);
+  friend void swap(Screen first, Screen second) {
+    std::swap(first.length, second.length);
+    std::swap(first.buffer, second.buffer);
+  };
   void draw(void);
   void clear_buffer(void);
   char& operator[](const unsigned);
-
+  Screen& operator=(Screen);
   private:
     char *buffer;
 };
@@ -39,6 +45,11 @@ char& Screen::operator[](const unsigned index) {
   return this->buffer[index];
 }
 
+Screen& Screen::operator=(Screen other) {
+  std::swap(this->length, other.length);
+  std::swap(this->buffer, other.buffer);
+  return *this;
+}
 
 
 Particle::Particle() {
