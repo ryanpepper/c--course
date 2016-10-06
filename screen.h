@@ -1,5 +1,6 @@
 #ifndef SCREEN_H
 #define SCREEN_H
+#include<algorithm>
 class Screen {
 
 public:
