@@ -1,6 +1,7 @@
 // N.B. This program contains a bug, on purpose.
 
 #include <iostream>
+#include <fstream>
 #include <new>
 #include <random>
 #include <functional>
@@ -8,21 +9,23 @@
 #include <utility>
 #include "particle.h"
 #include "screen.h"
-
+#include "array.hh"
 int main(){
+  char read_p;
+  double read_pos;
+  double read_vel;
+  std::ifstream config("config.yml");
+  Array particles;
   int min_column = 0;
   int max_column = 120;
+
   Screen screen(max_column);
-  int n_particles = 4;
-  Particle *particles = new Particle[n_particles];
-  auto speed = std::bind(std::uniform_real_distribution<double>(-10,10), std::mt19937(time(0)));
-  auto pos = std::bind(std::uniform_real_distribution<double>(0, 120), std::mt19937(time(0)));
-  auto symgen = std::bind(std::uniform_int_distribution<int>(0, 5), std::mt19937(time(0)));
-  char symbol_choices[] = { 'a', 'o', 'x', '*', 'X', 'O'};
-  for (int i=0; i<n_particles; i++) {
-    particles[i] = Particle(symbol_choices[symgen()], pos(), speed());
+  while (config) {
+    Particle p;
+    config >> p;
+    particles.push_back(p);
   }
-  
+  int n_particles = particles.size();
   int timeStep = 0;
   int stopTime = 80;
   while (timeStep < stopTime) {
@@ -34,5 +37,4 @@ int main(){
     screen.draw();
     timeStep++;
   }
-  delete[] particles;
 }

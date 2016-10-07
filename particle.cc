@@ -1,4 +1,6 @@
 #include "particle.h"
+#include<iostream>
+#include<fstream>
 
 Particle::Particle() {
 
@@ -28,4 +30,8 @@ void Particle::move(const int minColumn, const int maxColumn) {
 
 void Particle::fill_screen(Screen& screen) {
   screen[static_cast<int>(this->position)] = this->symbol;
+}
+
+std::istream& operator>>(std::istream &in, Particle &p) {
+  return in >> p.symbol >> p.position >> p.speed;
 }

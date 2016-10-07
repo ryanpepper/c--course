@@ -2,7 +2,7 @@ CPPFLAGS += -MD -MP -std=c++11
 
 SOURCES := $(wildcard *.cc)
 
-executable: $(SOURCES:%.cc=%.o)
+bounce: $(SOURCES:%.cc=%.o)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
 clean:
