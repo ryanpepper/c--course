@@ -10,14 +10,15 @@
 #include "particle.h"
 #include "screen.h"
 #include "array.hh"
+#include <vector>
 int main(){
   char read_p;
   double read_pos;
   double read_vel;
   std::ifstream config("config.yml");
-  Array particles;
+  std::vector<Particle> particles;
   int min_column = 0;
-  int max_column = 120;
+  int max_column = 100;
 
   Screen screen(max_column);
   while (config) {
