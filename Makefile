@@ -6,6 +6,6 @@ bounce: $(SOURCES:%.cc=%.o)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
 clean:
-	rm *.o *.d executable
+	rm *.o *.d bounce
 
 -include $(SOURCES:%.cc=%.d)

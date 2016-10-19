@@ -16,7 +16,7 @@ Particle::Particle(const Particle& other) {
   this->symbol = other.symbol;
 }
 
-void Particle::move(const int minColumn, const int maxColumn) {
+void Particle::move(const int &minColumn, const int &maxColumn) {
   this->position += this->speed;
   if (this->position >= maxColumn) {
     this->position = 2*maxColumn - this->position;
@@ -34,4 +34,15 @@ void Particle::fill_screen(Screen& screen) {
 
 std::istream& operator>>(std::istream &in, Particle &p) {
   return in >> p.symbol >> p.position >> p.speed;
+}
+
+void MagicParticle::move(const int &minColumn, const int &maxColumn) {
+  this->position += this->speed;
+  if (this->position>=maxColumn) {
+    this->position = 0;
+  }
+  else if (this->position<=minColumn) {
+    this->position = maxColumn;
+  }
+  std::cout << this->position << std::endl;
 }

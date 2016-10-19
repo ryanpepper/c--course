@@ -9,12 +9,20 @@ public:
   Particle();
   Particle(char, double, double);
   Particle(const Particle& other);
-  void move(int, int);
+  virtual void move(const int&, const int&);
   friend std::istream& operator>>(std::istream &in, Particle &p);
   void fill_screen(Screen&);
   char symbol;
   double position;
   double speed;
 };
+
+class MagicParticle : public Particle {
+  using Particle::Particle;
+  virtual void move(const int&, const int&);
+};
+
+
+
 #endif
 

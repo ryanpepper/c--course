@@ -19,9 +19,7 @@ void swap(Screen first, Screen second) {
 
 
 
-Screen::Screen(int l) : length(l) {
-  this->buffer = new char[length];
-}
+Screen::Screen(int l) : length(l), buffer(new char[l]) {}
 
 Screen::Screen(const Screen& other) : length(other.length) {
   this->buffer = new char[other.length];
